@@ -47,15 +47,15 @@ class Universe {
 
     public Star discoverStar() {
 
-        String name =  createName();
-        //TODO: methods ... playAndGoPlanetUniverse.catalogName()
-        //TODO: methods ... playAndGoPlanetUniverse.declination()
-        //TODO: methods ... playAndGoPlanetUniverse.renascence()
-        //TODO: methods ... playAndGoPlanetUniverse.observableSize()
-        //TODO: methods ... playAndGoPlanetUniverse.absoluteSize()
-        //TODO: methods ... playAndGoPlanetUniverse.constellation()
-        //TODO: methods ... playAndGoPlanetUniverse.hemisphere()
-        //TODO: methods ... playAndGoPlanetUniverse.mass()
+        String name =  createName(); // Mateusz
+        //TODO: methods ... playAndGoPlanetUniverse.catalogName() - Agnieszka
+        //TODO: methods ... playAndGoPlanetUniverse.declination() - Agnieszka
+        //TODO: methods ... playAndGoPlanetUniverse.renascence() - Agnieszka
+        //TODO: methods ... playAndGoPlanetUniverse.observableSize() - Bożena
+        //TODO: methods ... playAndGoPlanetUniverse.absoluteSize() - Bożena
+        //TODO: methods ... playAndGoPlanetUniverse.constellation() - Bożena
+        //TODO: methods ... playAndGoPlanetUniverse.hemisphere() - Mateusz
+        //TODO: methods ... playAndGoPlanetUniverse.mass() -Mateusz
 
 
         Star star = new Star(name, "catName", 4, LocalTime.now(), 2.3, 3, "kot", true, 0.6);
@@ -111,11 +111,17 @@ class PlayAndGoPlanetUniverse {
 
     public String instruction() {
         return "...:::Universe instruction:::..." +
-                "\n1. Add new star" +
-                "\n2. Display all" + //TODO
-                "\n3. Remove star" + //TODO
+                "\n1. Add new star" + // - Matuesz
+                "\n2. Display all" + //TODO - Agnieszka
+                "\n3. Remove star" + //TODO - zmiana beta -> alfa (jeśli usunięto alfe) - Agnieszka
                 "\n4. Select stars with tem between" + //TODO
-                "\n5." + //TODO
+                //TODO: szukaj w gwiazdozbiorze - Agnieszka
+                //TODO: wyszukaj gwiazdy znajdujace sie w odległosci x parseków od Ziemii - Bożena
+                //TODO: wyszukaj gwiazdy o temperaturze w zadanym przedziale - Bożena
+                //TODO: wyszukaj gwiazdy o wielkosci gwiazdowej w zadanym przedziale - Mateusz
+                //TODO: wyszukaj gwiazdy z półkuli północnej / południowej - Mateusz
+                //TODO: wyszukaj potencjalne supernowe - Mateusz
+                "\n5." + //TODO zapis do pliku - - Bożena
                 "\n6." + //TODO
 
                 "\n7." + //TODO .....................................................................
