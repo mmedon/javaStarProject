@@ -6,6 +6,23 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
 
+
+/**
+ * ...........::::: KOMUNIKAT ::::::.......
+ *
+ * Proponuję najpierw zacząć od klasy Universe
+ * póżniej można myśleć o reszcie  ;)
+ *
+ * todo --class <<<Universe>>> first best option
+ *
+ * PS zapomniałem o 2 polach w klasie ;P
+ * PS 2 Rozrysowałem to może bardziej czytelnie co gdzie kiedy i jak ;P
+ * PS 3 Nazwy, typy, struktura, cokolwiek można zmieniać dowolnie :)
+ *
+ *
+ * ps 4 last but not least >>>> nie zapomnijcie o commitach i "puszach"
+ *
+ */
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -29,8 +46,83 @@ public class Main {
 
     }
 
+}
 
+class PlayAndGoPlanetUniverse {
 
+    private final Scanner scanner = new Scanner(System.in);
+
+    public String instruction() {
+        return "...:::Universe instruction:::..." +
+                "\n1. Add new star" + // Mateusz
+                "\n2. Display all" + // Agnieszka
+                "\n3. Remove star" + // Agnieszka
+                "\n5. Search in Universe" + // Agnieszka
+                "\n6. Find Stars in x light years away" +  // Bożena
+                "\n7. Select stars with temperature between" + // Bożena
+                "\n8. Find from star mass" + // Mateusz
+                "\n9. On which visible from hemisphere" + // Mateusz
+                "\n0. Search for superStars" + // Mateusz
+                "\n'q' save to file" +  // Bożena
+                "\n'q' quit";
+
+    }
+
+    public void bigBang(PlayAndGoPlanetUniverse playAndGoPlanetUniverse, Universe universe) {
+        boolean play = true;
+        while (play) {
+
+            System.out.println(playAndGoPlanetUniverse.instruction());
+
+            char choose = scanner.nextLine().charAt(0);
+            switch (choose){
+                case '1':
+                    universe.addNewStarToTheUniverse(); // Mateusz
+                    break;
+                case '2':
+                    printUniverse(universe); //TODO - Agnieszka
+                    break;
+                case '3':
+                    //TODO - zmiana beta -> alfa (jeśli usunięto alfe) - Agnieszka
+                    break;
+                case '4':
+                    //TODO: szukaj w gwiazdozbiorze - Agnieszka
+                    break;
+                case '5':
+                    //TODO: wyszukaj gwiazdy znajdujace sie w odległosci x parseków od Ziemii - Bożena
+                    break;
+                case '6':
+                    //TODO: wyszukaj gwiazdy o temperaturze w zadanym przedziale - Bożena
+                    break;
+                case '7':
+                    //TODO: wyszukaj gwiazdy o wielkosci gwiazdowej w zadanym przedziale - Mateusz
+                    break;
+                case '8':
+                    //TODO: wyszukaj gwiazdy z półkuli północnej / południowej - Mateusz
+                    break;
+                case '9':
+                    //TODO: wyszukaj potencjalne supernowe - Mateusz
+                    break;
+                case '0':
+                    //TODO zapis do pliku - - Bożena
+                    break;
+                default:
+                    return;
+
+            }
+
+            if (choose == 'q') {
+                break;
+            }
+        }
+    }
+
+    public void printUniverse(Universe universe){
+        // print universe
+        for (Star star : universe.getStarUniverse()) {
+            System.out.println(star);
+        }
+    }
 }
 
 class Universe {
@@ -45,19 +137,31 @@ class Universe {
     }
 
 
+    /**
+     * @return Star object
+     *
+     * you are able to create a new star with ALL PARAMS
+     *
+     */
     public Star discoverStar() {
 
         String name =  createName(); // Mateusz
-        //TODO: methods ... playAndGoPlanetUniverse.catalogName() - Agnieszka
-        //TODO: methods ... playAndGoPlanetUniverse.declination() - Agnieszka
-        //TODO: methods ... playAndGoPlanetUniverse.renascence() - Agnieszka
-        //TODO: methods ... playAndGoPlanetUniverse.observableSize() - Bożena
-        //TODO: methods ... playAndGoPlanetUniverse.absoluteSize() - Bożena
-        //TODO: methods ... playAndGoPlanetUniverse.constellation() - Bożena
-        //TODO: methods ... playAndGoPlanetUniverse.hemisphere() - Mateusz
-        //TODO: methods ... playAndGoPlanetUniverse.mass() -Mateusz
 
+        //TODO: String catalogName = catalogName() - Agnieszka
+        //TODO: int declination = declination() - Agnieszka
+        //TODO: Type renascence = renascence() - Agnieszka
 
+        //TODO: double observableSize =  observableSize() - Bożena
+        //TODO: double absoluteSize = absoluteSize() - Bożena
+        //TODO: long distanceInLightYears = distanceInLightYears() odległość w latach świetlnych.      ????
+        //TODO: String constellationName = constellation() - Bożena gwiazdozbiór, w którym można zobaczyć daną gwiazdę.
+
+        //TODO: int starTemperature = temp() -                          ???
+        //TODO: boolean hemisphere = hemisphere() - Mateusz
+        //TODO: double mass = playAndGoPlanetUniverse.mass() - Mateusz
+
+        //todo example  Star star = new Star(name, catalogName, declination, renascence, observableSize, absoluteSize, distanceInLightYears, constellationName, starTemperature, hemisphere, mass);
+        //
         Star star = new Star(name, "catName", 4, LocalTime.now(), 2.3, 3, "kot", true, 0.6);
         return star;
 
@@ -105,88 +209,16 @@ class Universe {
     }
 }
 
-class PlayAndGoPlanetUniverse {
-
-    private final Scanner scanner = new Scanner(System.in);
-
-    public String instruction() {
-        return "...:::Universe instruction:::..." +
-                "\n1. Add new star" + // - Matuesz
-                "\n2. Display all" + //TODO - Agnieszka
-                "\n3. Remove star" + //TODO - zmiana beta -> alfa (jeśli usunięto alfe) - Agnieszka
-                "\n4. Select stars with tem between" + //TODO
-                //TODO: szukaj w gwiazdozbiorze - Agnieszka
-                //TODO: wyszukaj gwiazdy znajdujace sie w odległosci x parseków od Ziemii - Bożena
-                //TODO: wyszukaj gwiazdy o temperaturze w zadanym przedziale - Bożena
-                //TODO: wyszukaj gwiazdy o wielkosci gwiazdowej w zadanym przedziale - Mateusz
-                //TODO: wyszukaj gwiazdy z półkuli północnej / południowej - Mateusz
-                //TODO: wyszukaj potencjalne supernowe - Mateusz
-                "\n5." + //TODO zapis do pliku - - Bożena
-                "\n6." + //TODO
-
-                "\n7." + //TODO .....................................................................
-                "\n'q' quit";
-
-    }
-
-    public void bigBang(PlayAndGoPlanetUniverse playAndGoPlanetUniverse, Universe universe) {
-        boolean play = true;
-        while (play) {
-
-            System.out.println(playAndGoPlanetUniverse.instruction());
-
-            char choose = scanner.nextLine().charAt(0);
-            switch (choose){
-                case '1':
-                    universe.addNewStarToTheUniverse();
-                    break;
-                case '2':
-                    printUniverse(universe);
-                    break;
-//                            "\n3. Remove star" + //TODO
-//                            "\n4. Select stars with tem between" + //TODO
-//                            "\n5." + //TODO
-//                            "\n6." + //TODO
-//                            "\n. 7" + //TODO .....................................................................
-
-                default:
-                    return;
-
-            }
-
-
-            //TODO: methods ... catalogName()
-            //TODO: methods ... declination()
-            //TODO: methods ... renascence()
-            //TODO: methods ... observableSize()
-            //TODO: methods ... absoluteSize()
-            //TODO: methods ... constellation()
-            //TODO: methods ... hemisphere()
-            //TODO: methods ... mass()
-
-
-            if (choose == 'q') {
-                break;
-            }
-        }
-    }
-
-    public void printUniverse(Universe universe){
-        // print universe
-        for (Star star : universe.getStarUniverse()) {
-            System.out.println(star);
-        }
-    }
-}
-
 
 class Star {
 
     private String name;
     private String catalogName;
     private int declination;
+    //TODO: long distanceInLightYears = distanceInLightYears() odległość w latach świetlnych.
     private LocalTime renascence;
     private double observableSize;
+    //TODO: int starTemperature = temp(
     private double absoluteSize;
     private String constellation;
 
