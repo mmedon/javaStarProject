@@ -7,22 +7,6 @@ import java.util.Locale;
 import java.util.Scanner;
 
 
-/**
- * ...........::::: KOMUNIKAT ::::::.......
- *
- * Proponuję najpierw zacząć od klasy Universe
- * póżniej można myśleć o reszcie  ;)
- *
- * todo --class <<<Universe>>> first best option
- *
- * PS zapomniałem o 2 polach w klasie ;P
- * PS 2 Rozrysowałem to może bardziej czytelnie co gdzie kiedy i jak ;P
- * PS 3 Nazwy, typy, struktura, cokolwiek można zmieniać dowolnie :)
- *
- *
- * ps 4 last but not least >>>> nie zapomnijcie o commitach i "puszach"
- *
- */
 public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
