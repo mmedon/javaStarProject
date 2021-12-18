@@ -9,19 +9,18 @@ import java.util.Scanner;
 
 /**
  * ...........::::: KOMUNIKAT ::::::.......
- *
+ * <p>
  * Proponuję najpierw zacząć od klasy Universe
  * póżniej można myśleć o reszcie  ;)
- *
+ * <p>
  * todo --class <<<Universe>>> first best option
- *
+ * <p>
  * PS zapomniałem o 2 polach w klasie ;P
  * PS 2 Rozrysowałem to może bardziej czytelnie co gdzie kiedy i jak ;P
  * PS 3 Nazwy, typy, struktura, cokolwiek można zmieniać dowolnie :)
- *
- *
+ * <p>
+ * <p>
  * ps 4 last but not least >>>> nie zapomnijcie o commitach i "puszach"
- *
  */
 public class Main {
 
@@ -57,13 +56,13 @@ class PlayAndGoPlanetUniverse {
                 "\n1. Add new star" + // Mateusz
                 "\n2. Display all" + // Agnieszka
                 "\n3. Remove star" + // Agnieszka
-                "\n5. Search in Universe" + // Agnieszka
-                "\n6. Find Stars in x light years away" +  // Bożena
-                "\n7. Select stars with temperature between" + // Bożena
-                "\n8. Find from star mass" + // Mateusz
-                "\n9. On which visible from hemisphere" + // Mateusz
-                "\n0. Search for superStars" + // Mateusz
-                "\n'q' save to file" +  // Bożena
+                "\n4. Search by constellation name" + // Agnieszka
+                "\n5. Find Stars in x light years away" +  // Bożena
+                "\n6. Select stars with temperature between" + // Bożena
+                "\n7. Find from star mass" + // Mateusz
+                "\n8. On which hemisphere is visible" + // Mateusz
+                "\n9. Search for superStars" + // Mateusz
+                "\n'0' save to file" +  // Bożena
                 "\n'q' quit";
 
     }
@@ -75,18 +74,18 @@ class PlayAndGoPlanetUniverse {
             System.out.println(playAndGoPlanetUniverse.instruction());
 
             char choose = scanner.nextLine().charAt(0);
-            switch (choose){
+            switch (choose) {
                 case '1':
                     universe.addNewStarToTheUniverse(); // Mateusz
                     break;
                 case '2':
-                    printUniverse(universe); //TODO - Agnieszka
+                    printUniverse(universe); //TODO - Agnieszka wyszukaj wszystkie gwiazdy
                     break;
                 case '3':
                     //TODO - zmiana beta -> alfa (jeśli usunięto alfe) - Agnieszka
                     break;
                 case '4':
-                    //TODO: szukaj w gwiazdozbiorze - Agnieszka
+                    //TODO: szukaj w danym gwiazdozbiorze - Agnieszka
                     break;
                 case '5':
                     //TODO: wyszukaj gwiazdy znajdujace sie w odległosci x parseków od Ziemii - Bożena
@@ -117,7 +116,7 @@ class PlayAndGoPlanetUniverse {
         }
     }
 
-    public void printUniverse(Universe universe){
+    public void printUniverse(Universe universe) {
         // print universe
         for (Star star : universe.getStarUniverse()) {
             System.out.println(star);
@@ -132,20 +131,19 @@ class Universe {
     private List<Star> starOfUniverse = new ArrayList<>();
 
 
-    public void addNewStarToTheUniverse(){
+    public void addNewStarToTheUniverse() {
         starOfUniverse.add(discoverStar());
     }
 
 
     /**
      * @return Star object
-     *
+     * <p>
      * you are able to create a new star with ALL PARAMS
-     *
      */
     public Star discoverStar() {
 
-        String name =  createName(); // Mateusz
+        String name = createName(); // Mateusz
 
         //TODO: String catalogName = catalogName() - Agnieszka
         //TODO: int declination = declination() - Agnieszka
@@ -157,14 +155,45 @@ class Universe {
         //TODO: String constellationName = constellation() - Bożena gwiazdozbiór, w którym można zobaczyć daną gwiazdę.
 
         //TODO: int starTemperature = temp() -                          ???
-        //TODO: boolean hemisphere = hemisphere() - Mateusz
-        //TODO: double mass = playAndGoPlanetUniverse.mass() - Mateusz
+        boolean hemisphere = hemisphere();  //- Mateusz
+        double mass = mass(); //- Mateusz
 
-        //todo example  Star star = new Star(name, catalogName, declination, renascence, observableSize, absoluteSize, distanceInLightYears, constellationName, starTemperature, hemisphere, mass);
-        //
-        Star star = new Star(name, "catName", 4, LocalTime.now(), 2.3, 3, "kot", true, 0.6);
+        //example  Star star = new Star(name, catalogName, declination, distanceInLightYears, renascence, observableSize, absoluteSize, starTemperature, distanceInLightYears, constellationName, starTemperature, hemisphere, mass);
+        Star star = new Star(name, "catName", 4, 2000, LocalTime.now(), 2.3, 5000, 3, "kot", hemisphere, mass);
         return star;
 
+    }
+
+    private double mass() {
+
+        while (true) {
+
+            System.out.println("Enter Star mass between 0.1 - 50");
+            double mass = scanner.nextDouble();
+            scanner.nextLine();
+            if (mass > 0.1 && mass < 50) {
+                return mass;
+            }
+            System.out.println("...:::wrong value:::...");
+        }
+
+    }
+
+    private boolean hemisphere() {
+
+        while (true) {
+            System.out.println("From which hemisphere is star Visible? N for North and S South");
+            String value = scanner.nextLine();
+            value = value.toUpperCase(Locale.ROOT);
+
+            if (value.charAt(0) == 'S') {
+                return false;
+            }
+            if (value.charAt(0) == 'N') {
+                return true;
+            }
+            System.out.println("Enter only 'N' or 'S'");
+        }
     }
 
     private String createName() {
@@ -172,7 +201,7 @@ class Universe {
         while (true) {
 
             System.out.println("Enter name for your star (3 letter and 4 numbers): ");
-            String returnValue = scanner.next();
+            String returnValue = scanner.nextLine();
 
             if (returnValue.length() != 7) {
                 System.out.println("Invalid value: Star NAME- needs to have 3 capital letter and 4 numbers");
@@ -215,10 +244,10 @@ class Star {
     private String name;
     private String catalogName;
     private int declination;
-    //TODO: long distanceInLightYears = distanceInLightYears() odległość w latach świetlnych.
+    private long distanceInLightYears;
     private LocalTime renascence;
     private double observableSize;
-    //TODO: int starTemperature = temp(
+    private int starTemperature;
     private double absoluteSize;
     private String constellation;
 
@@ -226,21 +255,20 @@ class Star {
     private boolean hemisphere;
     private double mass;
 
-    public Star(String name, String catalogName, int declination, LocalTime renascence,
-                double observableSize, double absoluteSize, String constellation,
-                boolean hemisphere, double mass) {
-
+    public Star(String name, String catalogName, int declination, long distanceInLightYears, LocalTime renascence,
+                double observableSize, int starTemperature, double absoluteSize,
+                String constellation, boolean hemisphere, double mass) {
         this.name = name;
         this.catalogName = catalogName;
         this.declination = declination;
+        this.distanceInLightYears = distanceInLightYears;
         this.renascence = renascence;
         this.observableSize = observableSize;
+        this.starTemperature = starTemperature;
         this.absoluteSize = absoluteSize;
         this.constellation = constellation;
         this.hemisphere = hemisphere;
         this.mass = mass;
-
-
     }
 
     public String getName() {
@@ -267,6 +295,14 @@ class Star {
         this.declination = declination;
     }
 
+    public long getDistanceInLightYears() {
+        return distanceInLightYears;
+    }
+
+    public void setDistanceInLightYears(long distanceInLightYears) {
+        this.distanceInLightYears = distanceInLightYears;
+    }
+
     public LocalTime getRenascence() {
         return renascence;
     }
@@ -281,6 +317,14 @@ class Star {
 
     public void setObservableSize(double observableSize) {
         this.observableSize = observableSize;
+    }
+
+    public int getStarTemperature() {
+        return starTemperature;
+    }
+
+    public void setStarTemperature(int starTemperature) {
+        this.starTemperature = starTemperature;
     }
 
     public double getAbsoluteSize() {
@@ -321,12 +365,18 @@ class Star {
                 "name='" + name + '\'' +
                 ", catalogName='" + catalogName + '\'' +
                 ", declination=" + declination +
+                ", distanceInLightYears=" + distanceInLightYears +
                 ", renascence=" + renascence +
                 ", observableSize=" + observableSize +
+                ", starTemperature=" + starTemperature +
                 ", absoluteSize=" + absoluteSize +
                 ", constellation='" + constellation + '\'' +
-                ", hemisphere=" + hemisphere +
+                ", hemisphere=" + hemisphere() +
                 ", mass=" + mass +
                 '}';
+    }
+
+    private String hemisphere() {
+        return hemisphere ? "North" : "South";
     }
 }
