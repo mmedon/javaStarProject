@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 
 /**
@@ -32,14 +33,17 @@ public class Main {
         System.out.println("Hello world");
 
         //test init data
-//        Star initStar = new Star("name", "catName", 4, LocalTime.now(), 2.3, 3, "kot", true, 0.6);
-//        Star initStar2 = new Star("JOE1234", "catName", 66, LocalTime.now(), 4.0, 153, "kot", false, 0.6);
+        Star initStar = new Star("name", "catName", 4, 10, LocalTime.now(), 2.3, 3000, 40, "kot", true, 0.6);
+        Star initStar2 = new Star("JOE1234", "catName", 66, 20, LocalTime.now(), 153, 4000,30,"kot", false, 0.6);
+
 //        System.out.println(initStar);
 //        System.out.println(initStar2);
 
         PlayAndGoPlanetUniverse playAndGoPlanetUniverse = new PlayAndGoPlanetUniverse();
         Universe universe = new Universe();
 
+        universe.getStarUniverse().add(initStar);
+        universe.getStarUniverse().add(initStar2);
 
         playAndGoPlanetUniverse.bigBang(playAndGoPlanetUniverse, universe);
 
@@ -79,7 +83,7 @@ class PlayAndGoPlanetUniverse {
                     universe.addNewStarToTheUniverse(); // Mateusz
                     break;
                 case '2':
-                    printUniverse(universe); //TODO - Agnieszka wyszukaj wszystkie gwiazdy
+                    printUniverse(universe.getStarUniverse()); //TODO - Agnieszka wyszukaj wszystkie gwiazdy
                     break;
                 case '3':
                     //TODO - zmiana beta -> alfa (jeśli usunięto alfe) - Agnieszka
@@ -98,6 +102,8 @@ class PlayAndGoPlanetUniverse {
                     break;
                 case '8':
                     //TODO: wyszukaj gwiazdy z półkuli północnej / południowej - Mateusz
+                   printUniverse(universe.cos());
+
                     break;
                 case '9':
                     //TODO: wyszukaj potencjalne supernowe - Mateusz
@@ -116,9 +122,9 @@ class PlayAndGoPlanetUniverse {
         }
     }
 
-    public void printUniverse(Universe universe) {
+    public void printUniverse(List<Star> starList) {
         // print universe
-        for (Star star : universe.getStarUniverse()) {
+        for (Star star : starList) {
             System.out.println(star);
         }
     }
@@ -129,6 +135,31 @@ class Universe {
     private final Scanner scanner = new Scanner(System.in);
 
     private List<Star> starOfUniverse = new ArrayList<>();
+
+    public List<Star> cos() {
+        while (true) {
+            System.out.println("From which hemisphere is star Visible? N for North and S South");
+            String value = scanner.nextLine();
+            value = value.toUpperCase(Locale.ROOT);
+
+            if (value.charAt(0) == 'S') {
+                return visibleFromNorthOrSouth(false);
+            }
+            if (value.charAt(0) == 'N') {
+                return visibleFromNorthOrSouth(true);
+            }
+            System.out.println("Enter only 'N' or 'S'");
+        }
+    }
+
+    private List<Star> visibleFromNorthOrSouth(boolean northOrSouth){
+
+        List<Star> newList = new ArrayList<>(starOfUniverse);
+
+        return newList.stream()
+                .filter(p -> p.isHemisphere() == northOrSouth)
+                .collect(Collectors.toList());
+    }
 
 
     public void addNewStarToTheUniverse() {
@@ -151,17 +182,44 @@ class Universe {
 
         //TODO: double observableSize =  observableSize() - Bożena
         //TODO: double absoluteSize = absoluteSize() - Bożena
-        //TODO: long distanceInLightYears = distanceInLightYears() odległość w latach świetlnych.      ????
+        double distanceInLightYears = distanceInLightYears();
         //TODO: String constellationName = constellation() - Bożena gwiazdozbiór, w którym można zobaczyć daną gwiazdę.
 
-        //TODO: int starTemperature = temp() -                          ???
+        int starTemperature = temp(); //- Mateusz
         boolean hemisphere = hemisphere();  //- Mateusz
         double mass = mass(); //- Mateusz
 
         //example  Star star = new Star(name, catalogName, declination, distanceInLightYears, renascence, observableSize, absoluteSize, starTemperature, distanceInLightYears, constellationName, starTemperature, hemisphere, mass);
-        Star star = new Star(name, "catName", 4, 2000, LocalTime.now(), 2.3, 5000, 3, "kot", hemisphere, mass);
+        Star star = new Star(name, "catName", 4, distanceInLightYears, LocalTime.now(), 2.3, starTemperature, 3, "kot", hemisphere, mass);
         return star;
 
+    }
+
+    // Proxima Centauri 4.2465 light-years
+    private double distanceInLightYears() {
+
+        while (true){
+            System.out.println("enter distance in light-years");
+            double distance = scanner.nextDouble();
+            scanner.nextLine();
+            if(distance>0){
+                return distance;
+            }
+            System.out.println("need to be positive value");
+        }
+    }
+
+    private int temp() {
+        while (true) {
+
+            System.out.println("Enter Star temperature: (minimum value is 2000)");
+            int temp = scanner.nextInt();
+            scanner.nextLine();
+            if(temp>2000){
+                return temp;
+            }
+            System.out.println("Temperature need to be grater than 2000");
+        }
     }
 
     private double mass() {
@@ -176,7 +234,6 @@ class Universe {
             }
             System.out.println("...:::wrong value:::...");
         }
-
     }
 
     private boolean hemisphere() {
@@ -244,7 +301,7 @@ class Star {
     private String name;
     private String catalogName;
     private int declination;
-    private long distanceInLightYears;
+    private double distanceInLightYears;
     private LocalTime renascence;
     private double observableSize;
     private int starTemperature;
@@ -255,7 +312,7 @@ class Star {
     private boolean hemisphere;
     private double mass;
 
-    public Star(String name, String catalogName, int declination, long distanceInLightYears, LocalTime renascence,
+    public Star(String name, String catalogName, int declination, double distanceInLightYears, LocalTime renascence,
                 double observableSize, int starTemperature, double absoluteSize,
                 String constellation, boolean hemisphere, double mass) {
         this.name = name;
@@ -295,11 +352,11 @@ class Star {
         this.declination = declination;
     }
 
-    public long getDistanceInLightYears() {
+    public double getDistanceInLightYears() {
         return distanceInLightYears;
     }
 
-    public void setDistanceInLightYears(long distanceInLightYears) {
+    public void setDistanceInLightYears(double distanceInLightYears) {
         this.distanceInLightYears = distanceInLightYears;
     }
 
