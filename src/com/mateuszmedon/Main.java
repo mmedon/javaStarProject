@@ -1,5 +1,6 @@
 package com.mateuszmedon;
 
+import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,29 +29,17 @@ public class Main {
 
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        System.out.println("Hello world");
+        System.out.println("Hello in Stars World!!!");
 
-        //test init data
-        Constellation constellation = new Constellation("kot");
-        Star initStar = new Star("name", "catName", 4, 10, LocalTime.now(), 2.3, 3000, 40, constellation, true, 0.6);
-        Star initStar2 = new Star("JOE1234", "catName", 66, 20, LocalTime.now(), 153, 4000,30, constellation, false, 0.6);
-
-//        System.out.println(initStar);
-//        System.out.println(initStar2);
+        String filename = "starsOfUniverse.dat";
 
         PlayAndGoPlanetUniverse playAndGoPlanetUniverse = new PlayAndGoPlanetUniverse();
-        Universe universe = new Universe();
-
-        universe.getConstellations().add(constellation);
-        universe.getStarUniverse().add(initStar);
-        universe.getStarUniverse().add(initStar2);
+        Universe universe = new Universe(filename);
 
         playAndGoPlanetUniverse.bigBang(playAndGoPlanetUniverse, universe);
-
     }
-
 }
 
 class PlayAndGoPlanetUniverse {
@@ -73,8 +62,10 @@ class PlayAndGoPlanetUniverse {
 
     }
 
-    public void bigBang(PlayAndGoPlanetUniverse playAndGoPlanetUniverse, Universe universe) {
+    public void bigBang(PlayAndGoPlanetUniverse playAndGoPlanetUniverse, Universe universe) throws IOException {
         boolean play = true;
+        universe.readStarsFromFile();
+
         while (play) {
 
             System.out.println(playAndGoPlanetUniverse.instruction());
@@ -110,7 +101,7 @@ class PlayAndGoPlanetUniverse {
                     //TODO: wyszukaj potencjalne supernowe - Mateusz
                     break;
                 case '0':
-                    //TODO zapis do pliku - - Bożena
+                    universe.SaveStarsToFile(); //Bożena
                     break;
                 case 'q':
                     return;
@@ -145,8 +136,13 @@ class Universe {
     private static final double PARSEC_TO_LIGHT_YEARS = 3.26;
     private final Scanner scanner = new Scanner(System.in);
 
+    private String fileName;
     private List<Star> starOfUniverse = new ArrayList<>();
     private List<Constellation> constellations = new ArrayList<>();
+
+    public Universe(String fileName) {
+        this.fileName = fileName;
+    }
 
     public List<Star> displayFromVisible() {
         while (true) {
@@ -396,6 +392,66 @@ class Universe {
         return stars;
     }
 
+    public void readStarsFromFile() {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(this.fileName))) {
+            List<Object> objects = (List<Object>) objectInputStream.readObject();
+
+            if (objects != null) {
+                for (var obj : objects) {
+                    if (obj instanceof Star) {
+                        Star star = (Star) obj;
+                        addStarToUniverse(star);
+                        addStarToConstellation(star);
+                    }
+                }
+            } else {
+                System.out.println("There is no stars in the Universe!!! Add Stars!!!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void addStarToUniverse(Star star) {
+        starOfUniverse.add(star);
+    }
+
+    private void addStarToConstellation(Star star) {
+        boolean constellationExsists = false;
+        for (var constellation : constellations) {
+            if (star.getConstellation() == constellation.getConstellationName()) {
+                constellation.addNewStarToTheConstellation(star);
+                constellationExsists = true;
+                break;
+            }
+        }
+
+        if (!constellationExsists) {
+            Constellation constellation = new Constellation(star.getConstellation());
+            constellation.addNewStarToTheConstellation(star);
+            constellations.add(constellation);
+        }
+    }
+
+    public void SaveStarsToFile() throws IOException {
+        ObjectOutputStream objectOutputStream = null;
+
+        if (starOfUniverse.size() > 0) {
+            try {
+                objectOutputStream = new ObjectOutputStream(new FileOutputStream(this.fileName));
+                objectOutputStream.writeObject(starOfUniverse);
+
+                System.out.println("Stars was saved in a file: " + this.fileName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                objectOutputStream.close();
+            }
+        } else {
+            System.out.println("There is no stars to save!!!");
+        }
+    }
+
     public List<Star> getStarUniverse() {
         return starOfUniverse;
     }
@@ -414,7 +470,7 @@ class Universe {
 }
 
 
-class Star {
+class Star implements Serializable {
 
     private String name;
     private String catalogName;
