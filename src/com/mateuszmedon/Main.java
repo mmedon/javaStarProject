@@ -57,14 +57,14 @@ class PlayAndGoPlanetUniverse {
                 "\n7. Find from star mass" + // Mateusz
                 "\n8. On which hemisphere is visible" + // Mateusz
                 "\n9. Search for superStars" + // Mateusz
-                "\n'0' save to file" +  // Bożena
+                "\n'w' write to file" +  // Bożena
+                "\n'r' read from file" +  // Bożena
                 "\n'q' quit";
 
     }
 
     public void bigBang(PlayAndGoPlanetUniverse playAndGoPlanetUniverse, Universe universe) throws IOException {
         boolean play = true;
-        universe.readStarsFromFile();
 
         while (play) {
 
@@ -76,7 +76,6 @@ class PlayAndGoPlanetUniverse {
                     break;
                 case '2':
                     printUniverse(universe.getStarUniverse()); //TODO - Agnieszka wyszukaj wszystkie gwiazdy
-
                     break;
                 case '3':
                     //TODO - zmiana beta -> alfa (jeśli usunięto alfe) - Agnieszka
@@ -91,17 +90,19 @@ class PlayAndGoPlanetUniverse {
                     printUniverse(universe.displayByTemperature()); //Bożena
                     break;
                 case '7':
-                    //TODO: wyszukaj gwiazdy o wielkosci gwiazdowej w zadanym przedziale - Mateusz
+                    printUniverse(universe.findBetweenObservableSize()); //Mateusz
                     break;
                 case '8':
                    printUniverse(universe.displayFromVisible()); //Mateusz
-
                     break;
                 case '9':
-                    //TODO: wyszukaj potencjalne supernowe - Mateusz
+                    printUniverse(universe.displaySuperStars()); //Mateusz
                     break;
-                case '0':
+                case 'w':
                     universe.SaveStarsToFile(); //Bożena
+                    break;
+                case 'r':
+                    universe.readStarsFromFile(); //Bożena
                     break;
                 case 'q':
                     return;
@@ -142,6 +143,41 @@ class Universe {
 
     public Universe(String fileName) {
         this.fileName = fileName;
+    }
+
+    public List<Star> findBetweenObservableSize() {
+
+        double min, max;
+        while (true) {
+
+            List<Star> newList = new ArrayList<>(starOfUniverse);
+            System.out.println("Find Star by Observable Size \n Enter min value (grater then -26,74 [mag])");
+            min = scanner.nextDouble();
+            if (min < -26.74){
+                System.out.println("wrong value");
+                continue;
+            }
+            System.out.println("Enter value (cannot be grater than 15,00 [mag])");
+            max = scanner.nextDouble();
+            if (max > 15 && max > min){
+                System.out.println("wrong value");
+                continue;
+            }
+
+            double finalMin = min;
+            double finalMax = max;
+            return newList.stream()
+                    .filter(p -> p.getObservableSize() >= finalMin && p.getObservableSize() <= finalMax)
+                    .collect(Collectors.toList());
+
+        }
+    }
+
+    public List<Star> displaySuperStars() {
+        List<Star> newList = new ArrayList<>(starOfUniverse);
+        return newList.stream()
+                .filter(p -> p.getMass() >= 1.44)
+                .collect(Collectors.toList());
     }
 
     public List<Star> displayFromVisible() {
@@ -195,9 +231,7 @@ class Universe {
         double distanceInLightYears = distanceInLightYears();
         double absoluteSize = absoluteSize(observableSize, distanceInLightYears); //Bożena
         Constellation constellation = constellation(); // Bożena
-
         int starTemperature = temp(); //- Mateusz
-
         boolean hemisphere = hemisphere();  //- Mateusz
         double mass = mass(); //- Mateusz
 
@@ -205,7 +239,6 @@ class Universe {
         Star star = new Star(name, "catName", 4, distanceInLightYears, LocalTime.now(), observableSize, starTemperature, absoluteSize, constellation, hemisphere, mass);
 
         return star;
-
     }
 
     //unit magnitudo
@@ -393,20 +426,31 @@ class Universe {
     }
 
     public void readStarsFromFile() {
-        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(this.fileName))) {
+        try {
+            ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(this.fileName));
             List<Object> objects = (List<Object>) objectInputStream.readObject();
 
-            if (objects != null) {
-                for (var obj : objects) {
-                    if (obj instanceof Star) {
-                        Star star = (Star) obj;
-                        addStarToUniverse(star);
-                        addStarToConstellation(star);
-                    }
-                }
-            } else {
+            if(objects.isEmpty()){
                 System.out.println("There is no stars in the Universe!!! Add Stars!!!");
             }
+            for (Object obj: objects) {
+                System.out.println(obj.toString());
+            }
+
+//            if (objects != null) {
+//                for (var obj : objects) {
+//                    if (obj instanceof Star) {
+//                        Star star = (Star) obj;
+//                        addStarToUniverse(star);
+//                        addStarToConstellation(star);
+//                    }
+//                }
+//
+//            } else {
+//                System.out.println("There is no stars in the Universe!!! Add Stars!!!");
+//            }
+        } catch (FileNotFoundException e){
+            System.out.println("Use write first (w) or no Stars exist in Universe create one (1)");
         } catch (Exception e) {
             e.printStackTrace();
         }
