@@ -37,6 +37,7 @@ public class Main {
 
         PlayAndGoPlanetUniverse playAndGoPlanetUniverse = new PlayAndGoPlanetUniverse();
         Universe universe = new Universe(filename);
+        universe.readStarsFromFile();
 
         playAndGoPlanetUniverse.bigBang(playAndGoPlanetUniverse, universe);
     }
@@ -102,7 +103,7 @@ class PlayAndGoPlanetUniverse {
                     universe.SaveStarsToFile(); //Bożena
                     break;
                 case 'r':
-                    universe.readStarsFromFile(); //Bożena
+                    //universe.readStarsFromFile(); //Bożena
                     break;
                 case 'q':
                     return;
@@ -128,7 +129,7 @@ class PlayAndGoPlanetUniverse {
             }
         }
         else {
-            System.out.println("No stars find");
+            System.out.println("Stars didn't find.");
         }
     }
 }
@@ -434,7 +435,11 @@ class Universe {
                 System.out.println("There is no stars in the Universe!!! Add Stars!!!");
             }
             for (Object obj: objects) {
-                System.out.println(obj.toString());
+                if (obj instanceof Star) {
+                    Star star = (Star) obj;
+                    addStarToUniverse(star);
+                    addStarToConstellation(star);
+                }
             }
 
 //            if (objects != null) {
@@ -485,7 +490,7 @@ class Universe {
                 objectOutputStream = new ObjectOutputStream(new FileOutputStream(this.fileName));
                 objectOutputStream.writeObject(starOfUniverse);
 
-                System.out.println("Stars was saved in a file: " + this.fileName);
+                System.out.println("Stars ware saved in a file: " + this.fileName);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
