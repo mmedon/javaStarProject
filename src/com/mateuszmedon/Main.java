@@ -37,6 +37,7 @@ public class Main {
 
         PlayAndGoPlanetUniverse playAndGoPlanetUniverse = new PlayAndGoPlanetUniverse();
         Universe universe = new Universe(filename);
+        universe.readStarsFromFile();
 
         playAndGoPlanetUniverse.bigBang(playAndGoPlanetUniverse, universe);
     }
@@ -49,25 +50,30 @@ class PlayAndGoPlanetUniverse {
     public String instruction() {
         return "...:::Universe instruction:::..." +
                 "\n1. Add new star" + // Mateusz
-                "\n2. Display all" + // Agnieszka
+                "\n2. Display all stars" + // Agnieszka
                 "\n3. Remove star" + // Agnieszka
-                "\n4. Search by constellation name" + // Agnieszka
-                "\n5. Find Stars in x parsecs away" +  // Bożena
-                "\n6. Select stars with temperature between" + // Bożena
-                "\n7. Find from star mass" + // Mateusz
-                "\n8. On which hemisphere is visible" + // Mateusz
-                "\n9. Search for superStars" + // Mateusz
-                "\n'w' write to file" +  // Bożena
-                "\n'r' read from file" +  // Bożena
-                "\n'q' quit";
+                "\n4. Find stars in constellation" + // Agnieszka
+                "\n5. Find stars in x parsecs away" +  // Bożena
+                "\n6. Find stars in the temperature range" + // Bożena
+                "\n7. Find stars in the observable size range" + // Mateusz
+                "\n8. Find stars in the hemisphere" + // Mateusz
+                "\n9. Find super stars" + // Mateusz
+                "\n'w' Save to file" +  // Bożena
+                "\n'q' Quit" +
+                "\nRemember to save changes (w) before quit";
 
+    }
+
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
     }
 
     public void bigBang(PlayAndGoPlanetUniverse playAndGoPlanetUniverse, Universe universe) throws IOException {
         boolean play = true;
 
         while (play) {
-
+            clearScreen();
             System.out.println(playAndGoPlanetUniverse.instruction());
             char choose = scanner.nextLine().charAt(0);
             switch (choose) {
@@ -93,16 +99,13 @@ class PlayAndGoPlanetUniverse {
                     printUniverse(universe.findBetweenObservableSize()); //Mateusz
                     break;
                 case '8':
-                   printUniverse(universe.displayFromVisible()); //Mateusz
+                    printUniverse(universe.displayFromVisible()); //Mateusz
                     break;
                 case '9':
                     printUniverse(universe.displaySuperStars()); //Mateusz
                     break;
                 case 'w':
-                    universe.SaveStarsToFile(); //Bożena
-                    break;
-                case 'r':
-                    universe.readStarsFromFile(); //Bożena
+                    universe.saveStarsToFile(); //Bożena
                     break;
                 case 'q':
                     return;
@@ -115,6 +118,9 @@ class PlayAndGoPlanetUniverse {
             if (choose == 'q') {
                 break;
             }
+
+            System.out.println("\n\n...:::Click enter:::...");
+            scanner.nextLine();
         }
     }
 
@@ -128,7 +134,7 @@ class PlayAndGoPlanetUniverse {
             }
         }
         else {
-            System.out.println("No stars find");
+            System.out.println("Stars warn't found.");
         }
     }
 }
@@ -434,7 +440,11 @@ class Universe {
                 System.out.println("There is no stars in the Universe!!! Add Stars!!!");
             }
             for (Object obj: objects) {
-                System.out.println(obj.toString());
+                if (obj instanceof Star) {
+                    Star star = (Star) obj;
+                    addStarToUniverse(star);
+                    addStarToConstellation(star);
+                }
             }
 
 //            if (objects != null) {
@@ -477,7 +487,7 @@ class Universe {
         }
     }
 
-    public void SaveStarsToFile() throws IOException {
+    public void saveStarsToFile() throws IOException {
         ObjectOutputStream objectOutputStream = null;
 
         if (starOfUniverse.size() > 0) {
@@ -485,7 +495,7 @@ class Universe {
                 objectOutputStream = new ObjectOutputStream(new FileOutputStream(this.fileName));
                 objectOutputStream.writeObject(starOfUniverse);
 
-                System.out.println("Stars was saved in a file: " + this.fileName);
+                System.out.println("Stars ware saved in a file: " + this.fileName);
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
