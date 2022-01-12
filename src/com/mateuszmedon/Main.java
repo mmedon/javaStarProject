@@ -84,7 +84,7 @@ class PlayAndGoPlanetUniverse {
                     printUniverse(universe.getStarUniverse()); //Agnieszka
                     break;
                 case '3':
-                    //TODO - zmiana beta -> alfa (jeśli usunięto alfe) - Agnieszka
+                    printUniverse(universe.removeStar()); //Agnieszka
                     break;
                 case '4':
                     printUniverse(universe.searchInConstellation()); //Agnieszka
@@ -222,6 +222,30 @@ class Universe {
         return starInConstellation.stream()
                 .filter(p -> (p.getConstellation().equals(constellationDisplay)))
                 .collect(Collectors.toList());
+    }
+
+    public List<Star> removeStar(){
+        System.out.println("Enter the catalog name of the star to be removed.");
+        new PlayAndGoPlanetUniverse().printUniverse(starOfUniverse);
+        String catNameStarRemoved = scanner.nextLine();
+        String constellationName = "";
+
+        for (int i = 0; i < starOfUniverse.size(); i++){
+            if (starOfUniverse.get(i).getCatalogName().equals(catNameStarRemoved)){
+                constellationName = starOfUniverse.get(i).getConstellation();
+                starOfUniverse.remove(i);
+            }
+        }
+
+        Constellation constellationToSet = new Constellation(constellationName);
+
+        for (int i = 0; i < starOfUniverse.size(); i++){
+            if (starOfUniverse.get(i).getConstellation() == constellationName){
+                starOfUniverse.get(i).setCatalogName(catalogName(constellationToSet));
+            }
+        }
+
+        return starOfUniverse;
     }
 
     public void addNewStarToTheUniverse() {
