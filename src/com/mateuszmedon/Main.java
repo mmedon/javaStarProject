@@ -284,7 +284,7 @@ class Universe {
 
     private String catalogName(Constellation constellation){
         String catName = "";
-        char sign = 'A';
+        char sign = 913;
         int starCounter = 0;
 
         for (int i = 0; i < starOfUniverse.size(); i++){
