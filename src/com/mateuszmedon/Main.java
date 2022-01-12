@@ -228,17 +228,15 @@ class Universe {
     public Star discoverStar() {
 
         String name = createName(); // Mateusz
-
         //TODO: String catalogName = catalogName() - Agnieszka
-        //TODO: int declination = declination() - Agnieszka
-        //TODO: Type renascence = renascence() - Agnieszka
-
+        LocalTime renascence = renascence(); //Agnieszka
         double observableSize =  observableSize(); // Bożena
         double distanceInLightYears = distanceInLightYears();
         double absoluteSize = absoluteSize(observableSize, distanceInLightYears); //Bożena
         Constellation constellation = constellation(); // Bożena
         int starTemperature = temp(); //- Mateusz
         boolean hemisphere = hemisphere();  //- Mateusz
+        double declination = declination(hemisphere); //Agnieszka
         double mass = mass(); //- Mateusz
 
         //example  Star star = new Star(name, catalogName, declination, distanceInLightYears, renascence, observableSize, absoluteSize, starTemperature, distanceInLightYears, constellationName, starTemperature, hemisphere, mass);
@@ -281,6 +279,50 @@ class Universe {
             LocalTime renanscence = LocalTime.of(hours, minutes, seconds);
 
             return renanscence;
+        }
+    }
+
+    private double declination(boolean hemisphere){
+        while(true){
+            double declination = 0.0;
+            System.out.println("Declination value. \nThe declination is 0 to 90 degrees latitude in the north and negative in the south.");
+            System.out.println("Enter a number of degrees between 0 and 90.");
+            int degrees = scanner.nextInt();
+            if (degrees < 0 || degrees > 90){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+
+            System.out.println("Enter a number of minutes between 00 and 60.");
+            int minutes = scanner.nextInt();
+            if (minutes < 0 || minutes > 60){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+            else if (minutes > 0 && minutes < 60 && degrees == 90){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+
+            System.out.println("Enter a number of seconds between 00 and 60.");
+            double seconds = scanner.nextDouble();
+            if (seconds < 0 || seconds > 60){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+            else if (seconds > 0 && seconds < 60 && degrees == 90){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+
+            if (hemisphere == true) {
+                declination = (degrees + (double) minutes / 60 + seconds / 3600);
+            }
+            else if (hemisphere == false){
+                declination = (degrees + (double) minutes / 60 + seconds / 3600) * (-1);
+            }
+
+            return declination;
         }
     }
 
@@ -565,7 +607,7 @@ class Star implements Serializable {
 
     private String name;
     private String catalogName;
-    private int declination;
+    private double declination;
     private double distanceInLightYears;
 
     private LocalTime renascence;
@@ -578,7 +620,7 @@ class Star implements Serializable {
     private boolean hemisphere;
     private double mass;
 
-    public Star(String name, String catalogName, int declination, double distanceInLightYears, LocalTime renascence,
+    public Star(String name, String catalogName, double declination, double distanceInLightYears, LocalTime renascence,
                 double observableSize, int starTemperature, double absoluteSize,
                 Constellation constellation, boolean hemisphere, double mass) {
         this.name = name;
@@ -612,11 +654,11 @@ class Star implements Serializable {
         this.catalogName = catalogName;
     }
 
-    public int getDeclination() {
+    public double getDeclination() {
         return declination;
     }
 
-    public void setDeclination(int declination) {
+    public void setDeclination(double declination) {
         this.declination = declination;
     }
 
