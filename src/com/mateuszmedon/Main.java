@@ -247,6 +247,43 @@ class Universe {
         return star;
     }
 
+    private LocalTime renascence(){
+        while(true){
+            System.out.println("Value of renascence. \nRenascence takes values from 00 to 24 hours.");
+            System.out.println("Enter a number of hours between 00 and 24.");
+            int hours = scanner.nextInt();
+            if (hours < 0 || hours > 24){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+
+            System.out.println("Enter a number of minutes between 00 and 60.");
+            int minutes = scanner.nextInt();
+            if (minutes < 0 || minutes > 60){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+            else if (minutes > 0 && minutes < 60 && hours == 24){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+
+            System.out.println("Enter a number of seconds between 00 and 60.");
+            int seconds = scanner.nextInt();
+            if (seconds < 0 || seconds > 60){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+            else if (seconds > 0 && seconds < 60 && hours == 24){
+                System.out.println("An invalid value was specified.");
+                continue;
+            }
+            LocalTime renanscence = LocalTime.of(hours, minutes, seconds);
+
+            return renanscence;
+        }
+    }
+
     //unit magnitudo
     private double observableSize() {
         double minObservableSize = -26.74;
