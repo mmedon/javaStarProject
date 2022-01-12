@@ -276,7 +276,6 @@ class Universe {
         double declination = declination(hemisphere); //Agnieszka
         double mass = mass(); //- Mateusz
 
-        //example  Star star = new Star(name, catalogName, declination, distanceInLightYears, renascence, observableSize, absoluteSize, starTemperature, distanceInLightYears, constellationName, starTemperature, hemisphere, mass);
         Star star = new Star(name, catalogName, declination, distanceInLightYears, renascence, observableSize, starTemperature, absoluteSize, constellation, hemisphere, mass);
 
         return star;
@@ -581,19 +580,6 @@ class Universe {
                     addStarToConstellation(star);
                 }
             }
-
-//            if (objects != null) {
-//                for (var obj : objects) {
-//                    if (obj instanceof Star) {
-//                        Star star = (Star) obj;
-//                        addStarToUniverse(star);
-//                        addStarToConstellation(star);
-//                    }
-//                }
-//
-//            } else {
-//                System.out.println("There is no stars in the Universe!!! Add Stars!!!");
-//            }
         } catch (FileNotFoundException e){
             System.out.println("Use write first (w) or no Stars exist in Universe create one (1)");
         } catch (Exception e) {
