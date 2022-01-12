@@ -81,13 +81,13 @@ class PlayAndGoPlanetUniverse {
                     universe.addNewStarToTheUniverse(); // Mateusz
                     break;
                 case '2':
-                    printUniverse(universe.getStarUniverse()); //TODO - Agnieszka wyszukaj wszystkie gwiazdy
+                    printUniverse(universe.getStarUniverse()); //Agnieszka
                     break;
                 case '3':
                     //TODO - zmiana beta -> alfa (jeśli usunięto alfe) - Agnieszka
                     break;
                 case '4':
-                    //TODO: szukaj w danym gwiazdozbiorze - Agnieszka
+                    printUniverse(universe.searchInConstellation()); //Agnieszka
                     break;
                 case '5':
                     printUniverse(universe.displayFromDistance()); //Bożena
@@ -208,6 +208,19 @@ class Universe {
 
         return newList.stream()
                 .filter(p -> p.isHemisphere() == northOrSouth)
+                .collect(Collectors.toList());
+    }
+
+    public List<Star> searchInConstellation(){
+        List<Star> starInConstellation = new ArrayList<>(starOfUniverse);
+        System.out.println("Select a constellation to display.");
+        for (var constellation : constellations) {
+            System.out.println("- " + constellation.getConstellationName());
+        }
+        String constellationDisplay = scanner.nextLine();
+
+        return starInConstellation.stream()
+                .filter(p -> (p.getConstellation().equals(constellationDisplay)))
                 .collect(Collectors.toList());
     }
 
