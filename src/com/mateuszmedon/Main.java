@@ -228,21 +228,40 @@ class Universe {
     public Star discoverStar() {
 
         String name = createName(); // Mateusz
-        //TODO: String catalogName = catalogName() - Agnieszka
         LocalTime renascence = renascence(); //Agnieszka
         double observableSize =  observableSize(); // Bożena
         double distanceInLightYears = distanceInLightYears();
         double absoluteSize = absoluteSize(observableSize, distanceInLightYears); //Bożena
         Constellation constellation = constellation(); // Bożena
+        String catalogName = catalogName(constellation); //Agnieszka
         int starTemperature = temp(); //- Mateusz
         boolean hemisphere = hemisphere();  //- Mateusz
         double declination = declination(hemisphere); //Agnieszka
         double mass = mass(); //- Mateusz
 
         //example  Star star = new Star(name, catalogName, declination, distanceInLightYears, renascence, observableSize, absoluteSize, starTemperature, distanceInLightYears, constellationName, starTemperature, hemisphere, mass);
-        Star star = new Star(name, "catName", 4, distanceInLightYears, LocalTime.now(), observableSize, starTemperature, absoluteSize, constellation, hemisphere, mass);
+        Star star = new Star(name, catalogName, declination, distanceInLightYears, renascence, observableSize, starTemperature, absoluteSize, constellation, hemisphere, mass);
 
         return star;
+    }
+
+    private String catalogName(Constellation constellation){
+        String catName = "";
+        char sign = 'A';
+        int starCounter = 0;
+
+        for (int i = 0; i < starOfUniverse.size(); i++){
+            if (starOfUniverse.get(i).getConstellation().equals(constellation.getConstellationName())) {
+                starCounter++;
+            }
+        }
+
+        int n = (byte)sign + starCounter;
+        sign = (char)n;
+
+        catName = sign + constellation.getConstellationName();
+
+        return catName;
     }
 
     private LocalTime renascence(){
