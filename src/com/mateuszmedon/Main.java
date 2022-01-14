@@ -237,14 +237,21 @@ class Universe {
             }
         }
 
-        Constellation constellationToSet = new Constellation(constellationName);
+        starOfUniverse = changeOrdinalLetter(constellationName);
 
-        for (int i = 0; i < starOfUniverse.size(); i++){
-            if (starOfUniverse.get(i).getConstellation() == constellationName){
-                starOfUniverse.get(i).setCatalogName(catalogName(constellationToSet));
+        return starOfUniverse;
+    }
+
+    public List<Star> changeOrdinalLetter (String constellationName){
+        char newSign = 913;
+        for (var star : starOfUniverse){
+            if (star.getConstellation().equals(constellationName)){
+                String catName = star.getCatalogName();
+                catName = newSign + constellationName;
+                star.setCatalogName(catName);
+                newSign++;
             }
         }
-
         return starOfUniverse;
     }
 
@@ -283,7 +290,7 @@ class Universe {
 
     private String catalogName(Constellation constellation){
         String catName = "";
-        char sign = 'A';
+        char sign = 913;
         int starCounter = 0;
 
         for (int i = 0; i < starOfUniverse.size(); i++){
