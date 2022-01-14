@@ -11,28 +11,20 @@ import java.util.stream.Collectors;
 
 
 /**
- * ...........::::: KOMUNIKAT ::::::.......
- * <p>
- * Proponuję najpierw zacząć od klasy Universe
- * póżniej można myśleć o reszcie  ;)
- * <p>
- * todo --class <<<Universe>>> first best option
- * <p>
- * PS zapomniałem o 2 polach w klasie ;P
- * PS 2 Rozrysowałem to może bardziej czytelnie co gdzie kiedy i jak ;P
- * PS 3 Nazwy, typy, struktura, cokolwiek można zmieniać dowolnie :)
- * <p>
- * <p>
- * ps 4 last but not least >>>> nie zapomnijcie o commitach i "puszach"
+ * ...::: Stars Of The Universe :::...
+ *
+ * made by:
+ * AGNIESZKA WARDEGA  -Agnieszka Wardęga
+ * BOZENA MAZUR  -b0zenamazur
+ * MATEUSZ MEDON  -@Morpheush333, mmedon
+ *
+ * git: https://github.com/mmedon/javaStarProject
  */
 public class Main {
-
-    private static final Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
 
         System.out.println("Hello in Stars World!!!");
-
         String filename = "starsOfUniverse.dat";
 
         PlayAndGoPlanetUniverse playAndGoPlanetUniverse = new PlayAndGoPlanetUniverse();
